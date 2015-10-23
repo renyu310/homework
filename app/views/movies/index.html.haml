@@ -4,10 +4,18 @@
 %table#movies
   %thead
     %tr
-      %th Movie Title
-      %th Rating
-      %th Release Date
-      %th More Info
+  - if @issort=="titlesort"
+    %th.hilite#title_header= link_to "Movie Title","/movies?sort=titlesort"
+  - else
+    %th#title_header= link_to "Movie Title","/movies?sort=titlesort"
+
+  %th Rating
+  - if @issort=="datesort"
+    %th.hilite#release_date_header= link_to "Release Date", "/movies?sort=datesort"
+  - else
+    %th#release_date_header= link_to "Release Date", "/movies?sort=datesort"
+  %th More Info
+  
   %tbody
     - @movies.each do |movie|
       %tr
@@ -15,5 +23,6 @@
         %td= movie.rating
         %td= movie.release_date
         %td= link_to "More about #{movie.title}", movie_path(movie)
-
+            
 = link_to 'Add new movie', new_movie_path
+
