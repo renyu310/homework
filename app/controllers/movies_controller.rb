@@ -10,7 +10,18 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
   @issort=false
+  @all_ratings=Array.new
+  @ratings=Array.new
+  
   def index
+    if params[:rating]!=nil
+      @ratings= Hash[params[:rating]].keys
+         
+    else
+      @ratings=Movie.ratingcollection
+    end
+    @all_ratings=Movie.ratingcollection
+    
     if params[:sort]=="titlesort"
       
       @movies = Movie.all.order(title: :asc)
@@ -20,8 +31,8 @@ class MoviesController < ApplicationController
       @movies = Movie.all.order(release_date: :asc)
       @issort="datesort"
     else
-     
-      @movies = Movie.all
+            
+      @movies=Movie.where(rating: @ratings)
       @issort=false
     end
     
